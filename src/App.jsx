@@ -4,7 +4,7 @@ export default function App() {
   const [html, setHtml] = useState("");
 
   useEffect(() => {
-    fetch("/public/template.html")
+    fetch("/template.html")
       .then(res => res.text())
       .then(data => setHtml(data));
   }, []);
