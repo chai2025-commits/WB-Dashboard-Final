@@ -15,31 +15,23 @@ export default function App() {
       .then(data => {
         setHtml(data);
 
-        // Wait for HTML to load, then attach login handler
-        setTimeout(() => {
-          const form = document.querySelector("form");
+        // Define global login function
+        window.doLogin = async function () {
+          const email = document.querySelector('input[type="email"]')?.value;
+          const password = document.querySelector('input[type="password"]')?.value;
 
-          if (form) {
-            form.addEventListener("submit", async (e) => {
-              e.preventDefault();
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
 
-              const email = form.querySelector('input[type="email"]').value;
-              const password = form.querySelector('input[type="password"]').value;
-
-              const { data, error } = await supabase.auth.signInWithPassword({
-                email,
-                password,
-              });
-
-              if (error) {
-                alert("Login failed: " + error.message);
-              } else {
-                alert("Login successful!");
-                console.log(data);
-              }
-            });
+          if (error) {
+            alert("Login failed: " + error.message);
+          } else {
+            alert("Login successful!");
+            console.log(data);
           }
-        }, 500);
+        };
       });
   }, []);
 
